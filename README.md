@@ -4,29 +4,27 @@
 * The formatting of displayed numbers (1.25 k)
 
 ## Example 
-???
+[decimal] $val = [MultipleUnit]::ToValue("100.500", "K")
+$val value is 100500
 
 ## Known multiple units
-* kilo
-* mega
-* giga
-* tera
-* peta
-* exa
-* zetta
-* yotta
+* kilo (K)
+* mega (M)
+* giga (G)
+* tera (T)
+* peta (P)
+* exa (E)
+* zetta (Z)
+* yotta (Y)
 
 ## Include
 . .\MultipleUnit.ps1
 
 ## Usage
-* [TimeStamp] $ts = [HumanInterval]::Parse("30 sec")
-* $secs = [HumanInterval]::Parse("5 min 30 sec").TotalSeconds
-* $mins = (Get-Interval "2 hour 15 min").TotalMinutes
-* $mins = (Get-Interval -Interval "1day 6hours 45 mins").TotalMinutes
+[decimal] $val = [MultipleUnit]::ToValue("100.500", "M")
 
 ## Requirements
 PowerShell version >= 5.0
 
 ## License
-[GPL-3.0](https://github.com/Quake4/HumanInterval/blob/master/LICENSE)
+[GPL-3.0](https://github.com/Quake4/MultipleUnit/blob/master/LICENSE)
