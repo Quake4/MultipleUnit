@@ -24,3 +24,16 @@ $tests.Keys | ForEach-Object {
 	}
 	Remove-Variable parsed, unit, val, interval
 }
+
+try {
+	Write-Host "Test: 5 000.1 K" -ForegroundColor Yellow
+	[MultipleUnit]::ToValue("5 000.1", "K")
+}
+catch {
+	if ($_.FullyQualifiedErrorId -eq "Unknown value: 5 000.1") {
+		Write-Host "Passed: [MultipleUnit]::ToValue(`"5 000.1`", `"K`"): Unknown value: 5 000.1" -ForegroundColor Green
+	}
+	else {
+		Write-Host "Failed: [MultipleUnit]::ToValue(`"5 000.1`", `"K`"): Message not equal to `"Unknown value: 5 000.1`"" -ForegroundColor Red
+	}
+}
