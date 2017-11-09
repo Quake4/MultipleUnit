@@ -55,7 +55,7 @@ class MultipleUnit {
 		return [MultipleUnit]::ToString($value, $format, $suffux, $true)
 	}
 
-	hidden static [string] ToString([decimal] $value, [string] $format, [string] $suffux, [bool] $invariant) {
+	static [string] ToString([decimal] $value, [string] $format, [string] $suffux, [bool] $invariant) {
 		$measure = [MultipleUnit]::Measure($value)
 		$unit = [MultipleUnit]::UnitByMeasure($measure)
 
@@ -73,7 +73,7 @@ class MultipleUnit {
 		return "$result $unit$suffux"
 	}
 
-	hidden static [int] Measure([decimal] $value) {
+	static [int] Measure([decimal] $value) {
 		$prev = 0
 		[MultipleUnit]::Known.Values | Sort-Object | ForEach-Object {
 			if ([Math]::Abs($value / [Math]::Pow(10, $_)) -lt 1) {
@@ -84,7 +84,7 @@ class MultipleUnit {
 		return $prev
 	}
 
-	hidden static [string] UnitByMeasure([int] $measure) {
+	static [string] UnitByMeasure([int] $measure) {
 		$result = [string]::Empty
 		[MultipleUnit]::Known.GetEnumerator() | ForEach-Object {
 			if ($_.Value -eq $measure) {
