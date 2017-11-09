@@ -4,9 +4,17 @@
 * The formatting of displayed numbers (1.25 k)
 
 ## Example 
-[decimal] $val = [MultipleUnit]::ToValue("100.500", "K")
+[decimal] $val = [MultipleUnit]::ToValue("100.5", "K")
 
-$val value is 100500
+Result: $val = 100500
+
+[MultipleUnit]::ToStringInvariant("2500000")
+
+Result: 2.50 M
+
+[MultipleUnit]::ToStringInvariant("45000", "N0")
+
+Result: 45 K
 
 ## Known multiple units
 * K - kilo - 10^3
@@ -23,6 +31,7 @@ $val value is 100500
 
 ## Usage
 [decimal] $val = [MultipleUnit]::ToValue("100.500", "M")
+[string] $val = [MultipleUnit]::ToStringInvariant(100500, "N0", "Pa")
 
 ## Requirements
 PowerShell version >= 5.0

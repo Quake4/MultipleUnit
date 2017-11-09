@@ -59,4 +59,25 @@ $tests.Keys | ForEach-Object {
 	Remove-Variable parsed, interval
 }
 
+$tests = @{
+	45000 = "45 K"
+	9600000 = "10 M"
+	123456789 = "123 M"
+}
+
+$tests.Keys | ForEach-Object {
+	[string] $interval = $_
+	Write-Host "Test: $interval" -ForegroundColor Yellow
+	$parsed = [MultipleUnit]::ToStringInvariant($interval, "N0")
+	if ($parsed -eq $tests.$_) {
+		Write-Host "Passed: [MultipleUnit]::ToStringInvariant(`"$interval`"): $parsed" -ForegroundColor Green
+	}
+	else {
+		Write-Host "Failed: [MultipleUnit]::ToStringInvariant(`"$interval`"): $parsed != $($tests.$_)" -ForegroundColor Red
+	}
+	Remove-Variable parsed, interval
+}
+
+
+
 pause
