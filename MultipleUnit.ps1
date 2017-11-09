@@ -20,15 +20,9 @@ class MultipleUnit {
 		$unit = $unit.ToUpper()
 		if ([MultipleUnit]::Known.ContainsKey($unit)) {
 			[decimal] $val = $null
-			try {
-				#first - try convert by national culture
-				$val = [decimal]::Parse($value)
-			}
-			catch {
-				#two - try convert by invariant culture
-				[decimal]::TryParse($value, [Globalization.NumberStyles]::Number, [Globalization.CultureInfo]::InvariantCulture, [ref] $val)
-			}
-			if ($val) {
+			#first - try convert by national culture, two - try convert by invariant culture
+			if ([decimal]::TryParse($value, [ref] $val) -or
+				[decimal]::TryParse($value, [Globalization.NumberStyles]::Number, [Globalization.CultureInfo]::InvariantCulture, [ref] $val)) {
 				return $val * [Math]::Pow(10, [MultipleUnit]::Known."$unit")
 			}
 			throw [Exception]::new("Unknown value: " + $value)
