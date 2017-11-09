@@ -37,3 +37,23 @@ catch {
 		Write-Host "Failed: [MultipleUnit]::ToValue(`"5 000.1`", `"K`"): Message not equal to `"Unknown value: 5 000.1`"" -ForegroundColor Red
 	}
 }
+
+$tests = @{
+	100500 = "100.50 K"
+	2500000 = "2.50 M"
+}
+
+$tests.Keys | ForEach-Object {
+	[string] $interval = $_
+	Write-Host "Test: $interval" -ForegroundColor Yellow
+	$parsed = [MultipleUnit]::ToStringInvariant($interval)
+	if ($parsed -eq $tests."$interval") {
+		Write-Host "Passed: [MultipleUnit]::ToStringInvariant(`"$interval`"): $parsed" -ForegroundColor Green
+	}
+	else {
+		Write-Host "Failed: [MultipleUnit]::ToStringInvariant(`"$interval`"): $parsed != $($tests.$_)" -ForegroundColor Red
+	}
+	Remove-Variable parsed, interval
+}
+
+pause

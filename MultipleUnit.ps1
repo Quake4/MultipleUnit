@@ -26,15 +26,37 @@ class MultipleUnit {
 			}
 			catch {
 				#two - try convert by invariant culture
-				[decimal]::TryParse($value, [System.Globalization.NumberStyles]::Number, [System.Globalization.CultureInfo]::InvariantCulture, [ref] $val)
+				[decimal]::TryParse($value, [Globalization.NumberStyles]::Number, [Globalization.CultureInfo]::InvariantCulture, [ref] $val)
 			}
 			if ($val) {
 				return $val * [Math]::Pow(10, [MultipleUnit]::Known."$unit")
 			}
-			else {
-				throw [Exception]::new("Unknown value: " + $value)
-			}
+			throw [Exception]::new("Unknown value: " + $value)
 		}
 		throw [Exception]::new("Unknown multiple unit: " + $unit)
+	}
+
+	static [string] ToString([decimal] $value) {
+		return [MultipleUnit]::ToString($value, "N")
+	}
+
+	static [string] ToString([decimal] $value, [string] $format) {
+		return [MultipleUnit]::ToString($value, $format, [string]::Empty)
+	}
+
+	static [string] ToString([decimal] $value, [string] $format, [string] $suffux) {
+		return $value.ToString($format) + $suffux
+	}
+
+	static [string] ToStringInvariant([decimal] $value) {
+		return [MultipleUnit]::ToStringInvariant($value, "N")
+	}
+
+	static [string] ToStringInvariant([decimal] $value, [string] $format) {
+		return [MultipleUnit]::ToStringInvariant($value, $format, [string]::Empty)
+	}
+
+	static [string] ToStringInvariant([decimal] $value, [string] $format, [string] $suffux) {
+		return $value.ToString($format, [Globalization.CultureInfo]::InvariantCulture) + $suffux
 	}
 }
