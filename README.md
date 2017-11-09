@@ -5,6 +5,7 @@
 
 ## Example 
 [decimal] $val = [MultipleUnit]::ToValue("100.500", "K")
+
 $val value is 100500
 
 ## Known multiple units
