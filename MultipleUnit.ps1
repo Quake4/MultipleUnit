@@ -17,7 +17,7 @@ class MultipleUnit {
 	}
 
 	static [decimal] ToValue([string] $value, [string] $unit) {
-		$unit = $unit.ToUpper()
+		$unit = $unit.ToUpperInvariant()
 		if ([MultipleUnit]::Known.ContainsKey($unit)) {
 			[decimal] $val = $null
 			#first - try convert by national culture, two - try convert by invariant culture
