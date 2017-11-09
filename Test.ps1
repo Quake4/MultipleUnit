@@ -41,13 +41,16 @@ catch {
 $tests = @{
 	100500 = "100.50 K"
 	2500000 = "2.50 M"
+	99 = "99.00"
+	999 = "999.00"
+	1000 = "1.00 K"
 }
 
 $tests.Keys | ForEach-Object {
 	[string] $interval = $_
 	Write-Host "Test: $interval" -ForegroundColor Yellow
 	$parsed = [MultipleUnit]::ToStringInvariant($interval)
-	if ($parsed -eq $tests."$interval") {
+	if ($parsed -eq $tests.$_) {
 		Write-Host "Passed: [MultipleUnit]::ToStringInvariant(`"$interval`"): $parsed" -ForegroundColor Green
 	}
 	else {

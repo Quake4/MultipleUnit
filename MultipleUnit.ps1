@@ -6,6 +6,7 @@ License GPL-3.0
 
 class MultipleUnit {
 	static [hashtable] $Known = @{
+		"" = 0
 		"K" = 3
 		"M" = 6
 		"G" = 9
@@ -39,7 +40,7 @@ class MultipleUnit {
 	}
 
 	static [string] ToString([decimal] $value, [string] $format, [string] $suffux) {
-		return $value.ToString($format) + $suffux
+		return [MultipleUnit]::ToString($value, $format, $suffux, $false)
 	}
 
 	static [string] ToStringInvariant([decimal] $value) {
@@ -51,6 +52,45 @@ class MultipleUnit {
 	}
 
 	static [string] ToStringInvariant([decimal] $value, [string] $format, [string] $suffux) {
-		return $value.ToString($format, [Globalization.CultureInfo]::InvariantCulture) + $suffux
+		return [MultipleUnit]::ToString($value, $format, $suffux, $true)
+	}
+
+	hidden static [string] ToString([decimal] $value, [string] $format, [string] $suffux, [bool] $invariant) {
+		$measure = [MultipleUnit]::Measure($value)
+		$unit = [MultipleUnit]::UnitByMeasure($measure)
+
+		$value /= [Math]::Pow(10, $measure)
+
+		if ($invariant) {
+			$result =  $value.ToString($format, [Globalization.CultureInfo]::InvariantCulture)
+		}
+		else {
+			$result =  $value.ToString($format)
+		}
+		if ([string]::IsNullOrWhiteSpace("$unit$suffux")) {
+			return "$result"
+		}
+		return "$result $unit$suffux"
+	}
+
+	hidden static [int] Measure([decimal] $value) {
+		$prev = 0
+		[MultipleUnit]::Known.Values | Sort-Object | ForEach-Object {
+			if ([Math]::Abs($value / [Math]::Pow(10, $_)) -lt 1) {
+				return $prev
+			}
+			$prev = $_
+		}
+		return $prev
+	}
+
+	hidden static [string] UnitByMeasure([int] $measure) {
+		$result = [string]::Empty
+		[MultipleUnit]::Known.GetEnumerator() | ForEach-Object {
+			if ($_.Value -eq $measure) {
+				$result = $_.Key
+			}
+		}
+		return $result
 	}
 }
