@@ -4,16 +4,17 @@
 * The formatting of displayed numbers (1.25 k)
 
 ## Example 
+```powershell
 [decimal] $val = [MultipleUnit]::ToValue("100.5", "K")
-
+```
 Result: $val = 100500
-
+```powershell
 [MultipleUnit]::ToStringInvariant("2500000")
-
+```
 Result: 2.50 M
-
+```powershell
 [MultipleUnit]::ToStringInvariant("45000", "N0")
-
+```
 Result: 45 K
 
 ## Known multiple units
@@ -30,8 +31,10 @@ Result: 45 K
 . .\MultipleUnit.ps1
 
 ## Usage
+```powershell
 [decimal] $val = [MultipleUnit]::ToValue("100.500", "M")
-[string] $val = [MultipleUnit]::ToStringInvariant(100500, "N0", "Pa")
+[string] $val = [MultipleUnit]::ToStringInvariant(100500, "N1", "Pa")
+```
 
 ## Requirements
 PowerShell version >= 5.0
