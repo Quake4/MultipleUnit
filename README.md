@@ -28,7 +28,9 @@ Result: 45 K
 * Y - yotta - 10^24
 
 ## Include
+```powershell
 . .\MultipleUnit.ps1
+```
 
 ## Usage
 ```powershell
