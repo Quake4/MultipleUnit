@@ -57,20 +57,20 @@ class MultipleUnit {
 
 	static [string] ToString([decimal] $value, [string] $format, [string] $suffux, [bool] $invariant) {
 		$measure = [MultipleUnit]::Measure($value)
-		$unit = [MultipleUnit]::UnitByMeasure($measure)
+		$unitsuffix = [MultipleUnit]::UnitByMeasure($measure) + $suffux
 
 		$value /= [Math]::Pow(10, $measure)
 
 		if ($invariant) {
-			$result =  $value.ToString($format, [Globalization.CultureInfo]::InvariantCulture)
+			$result = $value.ToString($format, [Globalization.CultureInfo]::InvariantCulture)
 		}
 		else {
-			$result =  $value.ToString($format)
+			$result = $value.ToString($format)
 		}
-		if ([string]::IsNullOrWhiteSpace("$unit$suffux")) {
-			return "$result"
+		if ([string]::IsNullOrWhiteSpace($unitsuffix)) {
+			return $result
 		}
-		return "$result $unit$suffux"
+		return "$result $unitsuffix"
 	}
 
 	static [int] Measure([decimal] $value) {
