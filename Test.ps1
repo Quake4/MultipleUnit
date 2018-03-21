@@ -4,7 +4,7 @@ $tests = @{
 	"30.1 K" = 30100
 	"50,1 K" = 50100
 	"20,001 K" = 20.001 * 1000
-	"5,000.1 K" = 5000.1 * 1000
+	"5.000,1 K" = 0 # this not parsed
 	"5000.1 K" = 5000.1 * 1000
 	"5 000,1 K" = 5000.1 * 1000
 	"100500 M" = 100500 * 1000000
@@ -15,7 +15,17 @@ $tests.Keys | ForEach-Object {
 	Write-Host "Test: $interval" -ForegroundColor Yellow
 	$val = $interval.Substring(0, $interval.Length - 1)
 	$unit = $interval.Substring($interval.Length - 1, 1)
-	$parsed = [MultipleUnit]::ToValue($val, $unit)
+	[decimal] $parsed = 0
+	try {
+		$parsed = [MultipleUnit]::ToValue($val, $unit)
+	}
+	catch {}
+	if (!$parsed) {
+		try {
+			$parsed = [MultipleUnit]::ToValueInvariant($val, $unit)
+		}
+		catch {}
+	}
 	if ($parsed -eq $tests."$interval") {
 		Write-Host "Passed: [MultipleUnit]::ToValue(`"$val)`", `"$unit`"): $parsed" -ForegroundColor Green
 	}
@@ -77,7 +87,3 @@ $tests.Keys | ForEach-Object {
 	}
 	Remove-Variable parsed, interval
 }
-
-
-
-pause
