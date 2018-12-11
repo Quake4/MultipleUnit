@@ -87,3 +87,36 @@ $tests.Keys | ForEach-Object {
 	}
 	Remove-Variable parsed, interval
 }
+
+$tests = @{
+	"1000" = 1000
+	"0.123456789" = 0.123456789
+	"6.1e-7" = 0.00000061
+	"6.1e-07" = 0.00000061
+	"6.1e6" = 6100000
+	"6.1e06" = 6100000
+}
+
+$tests.Keys | ForEach-Object {
+	[string] $interval = $_
+	Write-Host "Test: $interval" -ForegroundColor Yellow
+	[decimal] $parsed = 0
+	[string] $unit = [string]::Empty
+	try {
+		$parsed = [MultipleUnit]::ToValue($interval, $unit)
+	}
+	catch {}
+	if (!$parsed) {
+		try {
+			$parsed = [MultipleUnit]::ToValueInvariant($interval, $unit)
+		}
+		catch {}
+	}
+	if ($parsed -eq $tests."$interval") {
+		Write-Host "Passed: [MultipleUnit]::ToValue(`"$interval)`", `"$unit`"): $parsed" -ForegroundColor Green
+	}
+	else {
+		Write-Host "Failed: [MultipleUnit]::ToValue(`"$interval`", `"$unit`"): $parsed != $($tests.`"$interval`")" -ForegroundColor Red
+	}
+	Remove-Variable parsed, unit, interval
+}
