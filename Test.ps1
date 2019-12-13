@@ -48,6 +48,20 @@ catch {
 	}
 }
 
+try {
+	Write-Host "Test: 25000.1" -ForegroundColor Yellow
+	$value = [MultipleUnit]::ToValueInvariant("25000.1", $null)
+	if ($value -eq 25000.1) {
+		Write-Host "Passed: [MultipleUnit]::ToValueInvariant(`"25000.1)`", `$null): $value" -ForegroundColor Green
+	}
+	else {
+		Write-Host "Failed: [MultipleUnit]::ToValueInvariant(`"25000.1)`", `$null): $value" -ForegroundColor Red
+	}
+}
+catch {
+	Write-Host "Failed: [MultipleUnit]::ToValue(`"25000.1`", `$null): $_" -ForegroundColor Red
+}
+
 $tests = @{
 	100500 = "100.50 K"
 	2500000 = "2.50 M"
